@@ -1,0 +1,2 @@
+What is {party_name}'s position on the following statement: "{statement_text}"?
+Provide a brief answer.

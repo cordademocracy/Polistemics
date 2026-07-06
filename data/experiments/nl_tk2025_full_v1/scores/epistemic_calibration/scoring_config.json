@@ -1,0 +1,11 @@
+{
+  "metric_name": "epistemic_calibration",
+  "judge_hash": "59290680",
+  "panel": [
+    "gemini_3_flash_judge",
+    "deepseek_v4_flash_judge",
+    "xiaomi_mimo_judge"
+  ],
+  "temperature": 0.0,
+  "timestamp": "2026-06-18T11:45:35.434707+00:00"
+}

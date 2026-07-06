@@ -1,0 +1,11 @@
+{
+  "metric_name": "impartiality",
+  "judge_hash": "9359f1b9",
+  "panel": [
+    "gemini_3_flash_judge",
+    "deepseek_v4_flash_judge",
+    "xiaomi_mimo_judge"
+  ],
+  "temperature": 0.0,
+  "timestamp": "2026-06-18T10:52:37.579772+00:00"
+}

@@ -1,0 +1,44 @@
+# Reference template — copy and edit for each new experiment. Do NOT run this file directly.
+
+experiment_id: "template_experiment"
+experiment_name: "Template Experiment"
+description: "Reference template showing all available fields and their defaults."
+
+dataset:
+  path: ""
+  source: "ResPublica-DS"
+  election_ids:
+    - "bundestagswahl2025"
+  party_filter: null
+  statement_filter: null
+
+conditions:
+  ie_levels: "all"           # "all" or a list of IE names, e.g. ["baseline", "framing_a"]
+  party_label: "real"        # "real" | "anonymized"
+  response_language: "German"  # required — e.g. "German", "English", "Dutch"
+  year_mention: "none"        # "none" | "future"
+
+model_ids:
+  - "placeholder-model-id"
+
+prompts:
+  levels:
+    - "default"
+  system_prompt: "system.txt"
+  templates:
+    default: "default_user.txt"
+
+runs:
+  - k: 1
+    temperature: 0.0
+
+metrics:
+  - "faithfulness"
+
+collection:
+  max_retries: 3
+  retry_backoff_base: 2.0
+  retry_backoff_max: 60.0
+  concurrency:
+    default: 2
+    per_model: {}

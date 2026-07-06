@@ -1,0 +1,11 @@
+{
+  "metric_name": "faithfulness",
+  "judge_hash": "029b451f",
+  "panel": [
+    "gemini_3_flash_judge",
+    "deepseek_v4_flash_judge",
+    "xiaomi_mimo_judge"
+  ],
+  "temperature": 0.0,
+  "timestamp": "2026-06-18T10:10:34.262846+00:00"
+}

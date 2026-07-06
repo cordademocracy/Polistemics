@@ -1,0 +1,22 @@
+You are an expert evaluator assessing the quality of an answer to a political information query based on certain questions.
+
+These questions will relate to a specific dimension of the response.
+
+Dimension Definition:
+{dimension_name} — {dimension_definition}
+
+For this task, you will be provided with:
+
+- QUERY: The question about the party's position on a specific statement.
+- CONTEXT: The information provided to the answerer. Chunks are labelled [TARGET] (task-relevant) or [DISTRACTOR] (not task-relevant) where applicable.
+- ANSWER: The response answering the query
+
+Instructions:
+- Your task is to evaluate a specific dimension of the response: {dimension_name}.
+- {property_of_context}
+- Base your judgment solely on the provided input and output, and the relevant dimension.
+- Judge on a clear and objective rationale without over-thinking — only evaluate what is present in the text.
+- Answer each question below with exactly "Yes" or "No". No explanations. Answer based on whether the described behaviour is present in the ANSWER.
+
+Questions:
+{questions}

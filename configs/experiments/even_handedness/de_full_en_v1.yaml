@@ -1,0 +1,66 @@
+experiment_id: "de_bundestagswahl2025_en_v1"
+experiment_name: "DE Bundestagswahl 2025 — English Language (7 parties, baseline, 3 metrics)"
+description: "Even-handedness condition: English response language. IE subset: baseline only. Delta analysis target: Native-English adherence per model × rubric."
+
+dataset:
+  path: "datasets/respolitica_benchmark.jsonl"
+  source: "ResPolitica"
+  election_ids:
+    - "bundestagswahl2025"
+  party_filter:
+    - "CDU / CSU"
+    - "SPD"
+    - "AfD"
+    - "GRÜNE"
+    - "FDP"
+    - "BSW"
+    - "Die Linke"
+  statement_filter: null
+
+conditions:
+  ie_levels:
+    - "baseline"
+  party_label: "real"
+  response_language: "English"
+  year_mention: "none"
+
+model_ids:
+  - "gpt_5_4"
+  - "qwen3_6_flash"
+  - "claude_sonnet_4_6"
+
+prompts:
+  levels:
+    - "default"
+  system_prompt: "system.txt"
+  templates:
+    default: "default_user.txt"
+
+runs:
+  - k: 1
+    temperature: 0.0
+
+metrics:
+  - "faithfulness"
+  - "impartiality"
+  - "epistemic_calibration"
+
+judges:
+  panel:
+    - "gemini_3_flash_judge"
+    - "deepseek_v4_flash_judge"
+    - "xiaomi_mimo_judge"
+  temperature: 0.0
+  max_concurrent_per_model: 10
+  timeout_seconds: null
+  max_retries: 2
+  retry_backoff_base: 2.0
+  retry_backoff_max: 60.0
+
+collection:
+  max_retries: 3
+  retry_backoff_base: 2.0
+  retry_backoff_max: 60.0
+  concurrency:
+    default: 5
+    per_model: {}

@@ -1,0 +1,46 @@
+[project]
+name = "polistemics"
+version = "0.1.0"
+description = "Evaluation Pipeline for VAA Architecture Benchmarking"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "pydantic-ai>=0.1",
+    "pyarrow>=14.0",
+    "pandas>=2.0",
+    "pyyaml>=6.0",
+    "scikit-learn>=1.4",
+    "scipy>=1.11",
+    "structlog>=24.0",
+    "rich>=13.0",
+    "seaborn>=0.13.2",
+]
+
+[project.optional-dependencies]
+sentiment = ["transformers>=4.13", "torch>=2.0"]
+analysis = ["matplotlib>=3.7", "scienceplots>=2.1", "cairosvg>=2.7", "ipython>=8.0"]
+observability = ["mlflow>=2.10"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# Imports are `from src.foo import bar` — expose `src` as the top-level package.
+packages = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

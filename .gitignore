@@ -1,0 +1,39 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.env
+.env.local
+data/raw/
+data/costs/
+data/results/
+.pytest_cache/
+# Experiment data (generated, not committed)
+# data/experiments/*
+# configs/experiments/*
+# !configs/experiments/template_new_format.yaml
+# Raw judge audit logs (large; regenerable only by re-running judges)
+data/experiments/**/audit/
+# Metric backup dirs and transient scoring artifacts (not version-controlled)
+data/experiments/**/*.bak/
+data/experiments/**/scores/*/backups/
+data/experiments/**/scores/*/incomplete.jsonl
+scripts/experiments/*
+# Analysis outputs (notebooks, figures, docs — not versioned)
+/analysis/
+# Structured logs (generated at runtime)
+data/logs/
+logs/
+# Scratch / temp files
+data/tmp_*
+# Base datasets (large files, managed separately)
+datasets/*
+datasets
+docs/
+.worktrees/datasets
+.claude
+# Archived/historical dirs (no longer actively tracked)
+configs/prompts/.archive/
+configs/experiments/.archive/
+data/experiments/.archive/
+data/experiments/**/costs.jsonl
