@@ -1,6 +1,6 @@
 # Polistemics
 
-A benchmark pipeline for evaluating LLMs as Electoral Information Mediators.
+A benchmark pipeline for evaluating LLMs as Information Mediators in Politics & Elections.
 
 ## Overview
 
@@ -17,26 +17,41 @@ cp env.example .env  # fill in API keys
 
 Requires Python 3.12.
 
-## Quick Start, Reproduce Paper Experiments
+## Quick Start
 
 The pipeline has two stages:
 
 1. **Collect**: query LLMs with VAA statements, store structured responses as JSONL
-2. **Evaluate**: score outputs with an LLM-as-judge panel; produces the tidy scores table automatically
+2. **Evaluate**: score outputs with an LLM-as-judge panel
 
-### German Bundestagswahl 2025
+Every run is driven by one YAML config that sets the dataset, parties, models, and metrics:
+
+```bash
+uv run python scripts/collect.py --config configs/experiments/<experiment>.yaml
+uv run python scripts/evaluate.py --config configs/experiments/<experiment>.yaml
+```
+
+For example (for the 2025 German Bundestagswahl):
 
 ```bash
 uv run python scripts/collect.py --config configs/experiments/de_full/de_bundestagswahl2025_full_v1.yaml
 uv run python scripts/evaluate.py --config configs/experiments/de_full/de_bundestagswahl2025_full_v1.yaml
 ```
 
-### Dutch Tweede Kamer 2025
+The benchmark extends to any election that follows the same format as the accompanying [ResPolitica](https://github.com/cordademocracy/ResPolitica) dataset, which already includes both elections from the original paper (German Bundestagswahl 2025, Dutch Tweede Kamer 2025).
 
-```bash
-uv run python scripts/collect.py --config configs/experiments/nl_full/nl_tk2025_full_v1.yaml
-uv run python scripts/evaluate.py --config configs/experiments/nl_full/nl_tk2025_full_v1.yaml
-```
+## Information Environments
+
+Each statement is answered under six controlled evidence conditions rather than one uncontrolled retrieval setup, isolating specific model behaviors under imperfect information conditions to better understand mediation capabilities:
+
+| Environment | Evidence given | Isolates |
+| --- | --- | --- |
+| **Baseline** (`baseline`) | Clear, single-source context | Reference condition |
+| **Noisy** (`ie_noise`) | Relevant context + irrelevant distractors | Noise robustness |
+| **Counterfactual** (`ie_prior_conflict`) | Context conflicts with likely training priors | Reliance on context over parametric priors |
+| **Absent** (`ie_availability_absent`) | No context | Correct abstention |
+| **Vague** (`ie_clarity_vague`) | Vague or underspecified context | Resistance to false certainty |
+| **Contradictory** (`ie_consistency_contradiction`) | Internally contradictory context | Faithful reporting of conflict |
 
 ## Project Structure
 
@@ -44,14 +59,13 @@ uv run python scripts/evaluate.py --config configs/experiments/nl_full/nl_tk2025
 src/
   collect/    # LLM response collection pipeline
   evaluate/   # LLM-as-judge evaluation pipeline
-  metrics/    # fairness metric implementations
+  metrics/    # rubric metric implementations
   analysis/   # aggregation and plotting utilities
 configs/
   experiments/  # per-experiment YAML configs
   models.yaml   # model registry (add new models here)
   prompts/      # system and judge prompts
 scripts/      # CLI entry points
-tests/        # 45+ unit and integration tests
 ```
 
 ## Metrics
@@ -64,13 +78,25 @@ tests/        # 45+ unit and integration tests
 | `epistemic_calibration` | Whether the output accurately signals the limits of the available evidence. Scoring direction flips based on whether the evidence condition is answerable.                                                                                                         |
 
 
-All metrics are rubric-based (`BaseRubric` subclasses). Each rubric decomposes into sub-questions dispatched to a majority-vote judge panel. The primary score is `adherence_rate`, the fraction of sub-questions passed.
+All metrics are rubric-based (`BaseRubric` subclasses) and can be found in `src/metrics`. Each rubric decomposes into sub-questions dispatched to a majority-vote judge panel. The primary score is `adherence_rate`, the fraction of sub-questions passed.
 
 ## Extending the Benchmark
 
 - **New election:** add an experiment config under `configs/experiments/` and a corresponding dataset entry in [ResPolitica](https://github.com/cordademocracy/ResPolitica)
-- **New model:** add an entry to `configs/models.yaml`; no code changes required
+- **New model:** add an entry to `configs/models.yaml`
 - **New metric:** subclass `BaseRubric` in `src/metrics/rubric.py` and register via the metric factory
+
+## Scope & Vision
+
+The current release covers one  slice of the  larger space of **political information**. Polistemics has a focus on information mediation, the point where political information first enters a citizen's reasoning but the idea is to grow along three axes:
+
+| Axis | Covered | Open |
+| --- | --- | --- |
+| **Elections** | German Bundestagswahl 2025, Dutch Tweede Kamer 2025 | More elections from even more countries, languages and regional elections. See [ResPolitica](https://github.com/cordademocracy/ResPolitica) for further information. |
+| **Task types** | Party-position retrieval | Other queries like e.g. Issue-to-party navigation, party comparison, issue mapping |
+| **Involvement modes** | Informing (mediation) | Deeper modes like **deliberating** with citizens (on issues or debates), or even **recommending** who to vote for, which first need normative groundwork for proper evaluation |
+
+The three rubrics initially defined carry over across most of these axis, but are likely to be extended and operationalized differently based on the grounding data, or specific behaviors evaluated
 
 ## Configuration
 
@@ -84,7 +110,7 @@ OPENAI_API_KEY=...       # required if using OpenAI models directly
 
 `HF_API_KEY` is optional, only needed if configuring a `huggingface` provider model in `configs/models.yaml`.
 
-Model configuration lives in `configs/models.yaml`. No model names are hardcoded in source.
+Model configuration lives in `configs/models.yaml`.
 
 ## Tests
 
