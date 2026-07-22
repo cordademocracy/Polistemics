@@ -116,11 +116,11 @@ collection:
 
 def test_dataset_filter_with_path():
     df = DatasetFilter(
-        path="datasets/vaa_unified_federal.parquet",
+        path="datasets/respolitica_unified_federal.parquet",
         election_ids=["bundestagswahl2025"],
         party_filter=["SPD"],
     )
-    assert df.path == "datasets/vaa_unified_federal.parquet"
+    assert df.path == "datasets/respolitica_unified_federal.parquet"
     assert df.source == "ResPolitica"
 
 

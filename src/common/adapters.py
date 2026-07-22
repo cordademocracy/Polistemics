@@ -38,14 +38,14 @@ class DatasetAdapter(Protocol):
 
 
 class BenchmarkAdapter:
-    """Loads vaa_benchmark.jsonl into DatasetItem lists, expanding per IE.
+    """Loads respolitica_benchmark.jsonl into DatasetItem lists, expanding per IE.
 
     Each JSONL line is a BenchmarkSample. For each selected IE the sample is
     expanded into one DatasetItem, giving N items per sample where N is the
     number of selected IEs.
 
     Args:
-        jsonl_path: Absolute path to the vaa_benchmark.jsonl file.
+        jsonl_path: Absolute path to the respolitica_benchmark.jsonl file.
         conditions: Experiment-level condition configuration.
     """
 
